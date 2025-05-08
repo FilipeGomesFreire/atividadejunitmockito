@@ -7,7 +7,8 @@ import org.junit.jupiter.api.Test;
 
 public class ClienteTest {
 
-    // esse o chatgpt me ajudou, fiz um test pra ver se o cpf era valido
+    // isso eu quis colocar pra ficar um diferencial bonito, ai pedi pra o chatgpt me ajudar
+    
     private boolean isCpfValido(String cpf) {
         if (cpf == null || cpf.length() != 11 || cpf.matches("(\\d)\\1{10}"))
             return false;
@@ -32,24 +33,27 @@ public class ClienteTest {
     }
 
     @Test
-    @DisplayName("Validação de CPF: deve considerar CPF válido")
-    void deveAceitarCpfValido() {
+    @DisplayName("✅ CRIANDO CLIENTE")
+    void deveCriarCliente() {
+        Cliente cliente = new Cliente("12345678900", "João", "joao@email.com");
+
+        assertEquals("12345678900", cliente.getCpf());
+        assertEquals("João", cliente.getNome());
+        assertEquals("joao@email.com", cliente.getEmail());
+    }
+
+    @Test
+    @DisplayName("✅ VALIDANDO CPF")
+    void deveValidarCpfValido() {
         assertTrue(isCpfValido("12345678909")); // CPF válido
     }
 
     @Test
-    @DisplayName("Validação de CPF: deve considerar CPF inválido")
-    void deveRejeitarCpfInvalido() {
-        assertFalse(isCpfValido("12345678900")); // CPF inválido
-        assertFalse(isCpfValido("11111111111")); // todos iguais
-        assertFalse(isCpfValido("abc"));         // string inválida
-    }
-
-    @Test
-    @DisplayName("Criação de cliente com dados válidos")
-    void deveCriarCliente() {
-        Cliente cliente = new Cliente("12345678900", "Fulano", "fulano@email.com");
-        assertNotNull(cliente);
-        assertEquals("Fulano", cliente.getNome());
+    @DisplayName("❌ INVALIDANDO CPF")
+    void deveInvalidarCpfInvalido() {
+        assertFalse(isCpfValido("12345678900")); // dígito errado
+        assertFalse(isCpfValido("11111111111")); // repetido
+        assertFalse(isCpfValido("abc123"));      // letras
+        assertFalse(isCpfValido(""));            // vazio
     }
 }
